@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import xml.etree.ElementTree as ET
 import sys
 
@@ -8,7 +10,7 @@ if len(sys.argv) < 3:
 infos = {
     'arm64':('aarch64-linux',('x0','x1','x2','x3','x4','x5'),('svc #0','x8','x0')),
     'x64':('amd64-linux',('rdi','rsi','rdx','r10','r8','r9'),('syscall','rax','rax')),
-    'arm':('arm-linux',('swi 0x0','r7','r0'),('r0','r1','r2','r3','r4','r5')),
+    'arm':('arm-linux',('r0','r1','r2','r3','r4','r5'),('swi 0x0','r7','r0')),
     'x86':('i386-linux',('ebx','ecx','edx','esi','edi','ebp'),('int $0x80','eax','eax')),
     'mips32':('mips-n32-linux',('a0','a1','a2','a3','a4','a5'),('syscall','v0','v0')),
     'mips64':('mips-n64-linux',('a0','a1','a2','a3','a4','a5'),('syscall','v0','v0')),
