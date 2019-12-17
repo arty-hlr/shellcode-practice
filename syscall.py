@@ -2,6 +2,8 @@
 
 import xml.etree.ElementTree as ET
 import sys
+import os
+import subprocess
 
 if len(sys.argv) < 3:
     print('Usage: syscall <arch> <syscall>')
@@ -27,10 +29,15 @@ filename = infos[arch][0]
 order = infos[arch][1]
 instruction_sys_ret = infos[arch][2]
 name = sys.argv[2]
+filepath = '/usr/share/gdb/syscalls/'+filename+'.xml'
 
-syscall = ET.parse('/usr/share/gdb/syscalls/{}.xml'.format(filename)).getroot().find("./syscall[@name='{}']".format(name)).attrib['number']
+syscall = ET.parse('{}'.format(filepath)).getroot().find("./syscall[@name='{}']".format(name)).attrib['number']
+declaration = subprocess.check_output('man {} | grep "{}(" | head -1 | cut -d ";" -f 1'.format(name,name), shell=True).decode().strip()
+if not declaration:
+    declaration = subprocess.check_output('man {}.2 | grep "{}(" | head -1 | cut -d ";" -f 1'.format(name,name), shell=True).decode().strip()
 
 print('For {}:'.format(arch))
 print('The instruction is {}, the syscall register is {}, and the return register is {}'.format(*instruction_sys_ret))
 print('The registers for the arguments are: {}'.format(', '.join(order)))
 print('The syscall is {}/{}'.format(hex(int(syscall)),syscall))
+print('The syscall function declaration is: \n{}'.format(declaration))
