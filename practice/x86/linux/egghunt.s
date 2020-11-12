@@ -1,7 +1,7 @@
 BITS 32
 
 ; initialization
-mov ebx,0x7433336c
+mov ebx,0x50905090
 xor ecx,ecx
 mul ecx
 
